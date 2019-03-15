@@ -31,7 +31,7 @@ def dispTopics(pt, voca, pz, filename):
         topics.append((pz[k], tmps))
         k += 1
 
-    with open('/home/michael/gitrepo/BTM/output/topics/' + filename, mode='w') as out_file:
+    with open('../output/topics/' + filename, mode='w') as out_file:
         writer = csv.writer(out_file, delimiter=' ', quotechar='"')
         print('p(z)\t\tTop words')
         for pz, s in sorted(topics, reverse=True):
