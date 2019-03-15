@@ -5,6 +5,7 @@
 #    mat/pw_z.k20
 
 import sys
+import csv
 
 # return:    {wid:w, ...}
 def read_voca(pt):
@@ -18,21 +19,25 @@ def read_pz(pt):
     return [float(p) for p in open(pt).readline().split()]
     
 # voca = {wid:w,...}
-def dispTopics(pt, voca, pz):
+def dispTopics(pt, voca, pz, filename):
     k = 0
     topics = []
     for l in open(pt):
         vs = [float(v) for v in l.split()]
         wvs = zip(range(len(vs)), vs)
         wvs = sorted(wvs, key=lambda d:d[1], reverse=True)
-        #tmps = ' '.join(['%s' % voca[w] for w,v in wvs[:10]])
-        tmps = ' '.join(['%s:%f' % (voca[w],v) for w,v in wvs[:10]])
+        tmps = ' '.join(['%s' % voca[w] for w,v in wvs[:10]])
+        #tmps = ' '.join(['%s:%f' % (voca[w],v) for w,v in wvs[:10]])
         topics.append((pz[k], tmps))
         k += 1
-        
-    print('p(z)\t\tTop words')
-    for pz, s in sorted(topics, reverse=True):
-        print('%f\t%s' % (pz, s))
+
+    with open('/home/michael/gitrepo/BTM/output/topics/' + filename, mode='w') as out_file:
+        writer = csv.writer(out_file, delimiter=' ', quotechar='"')
+        print('p(z)\t\tTop words')
+        for pz, s in sorted(topics, reverse=True):
+            pzFormat = "{0:.2f}".format(pz * 100)
+            print('%s\t%s' % (pzFormat, s))
+            writer.writerow([pzFormat, s])
 
 if __name__ == '__main__':
     if len(sys.argv) < 4:
@@ -45,6 +50,7 @@ if __name__ == '__main__':
     model_dir = sys.argv[1]
     K = int(sys.argv[2])
     voca_pt = sys.argv[3]
+    filename =  sys.argv[4]
     voca = read_voca(voca_pt)    
     W = len(voca)
     print('K:%d, n(W):%d' % (K, W))
@@ -53,4 +59,8 @@ if __name__ == '__main__':
     pz = read_pz(pz_pt)
     
     zw_pt = model_dir + 'k%d.pw_z' %  K
-    dispTopics(zw_pt, voca, pz)
+    dispTopics(zw_pt, voca, pz, filename)
+
+    # write csv
+
+
