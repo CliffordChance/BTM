@@ -14,7 +14,7 @@ mkdir -p $output_dir/model
 
 for filename in $(ls ../data/subjects); do
   if $filename != ".ignore"; then
-      doc_pt=/home/michael/gitrepo/BTM/data/subjects/$filename
+      doc_pt=../data/subjects/$filename
 
       echo "=============== Index Docs ============="
       # docs after indexing
