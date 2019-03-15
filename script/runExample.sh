@@ -11,7 +11,7 @@ save_step=501
 input_dir=../sample-data/
 output_dir=../output/
 model_dir=${output_dir}model/
-mkdir -p $output_dir/model 
+mkdir -p $output_dir/model
 
 # the input docs for training
 doc_pt=${input_dir}doc_info.txt
